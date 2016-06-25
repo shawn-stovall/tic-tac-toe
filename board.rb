@@ -2,24 +2,46 @@
 class Board
   attr_reader :board
   
-  # Initialize @board instance variable to all nils. 1 = O, nil = Empty, -1 = X.
+  # Initialize <code>@board</code> instance variable to all nils. 1 = O, nil = Empty, -1 = X.
   def initialize
     @board = [[nil,nil,nil],
               [nil,nil,nil],
               [nil,nil,nil]]
   end
 
+  # Place an "O"(1) on the board at coordinates x and y.
+  #
+  #   @board = [[nil,nil,nil],
+  #             [nil,nil,nil],
+  #             [nil,nil,nil]]
+  #
+  #   game = Board.new
+  #   game.place_O(0,1)
+  #   @board = [[nil,nil,nil],
+  #             [  1,nil,nil],
+  #             [nil,nil,nil]]
   def place_O(x, y)
     place(x, y, @@O)
     @board
   end
 
+  # Place an "X"(-1) on the board at coordinates x and y.
+  #
+  #   @board = [[nil,nil,nil],
+  #             [nil,nil,nil],
+  #             [nil,nil,nil]]
+  #
+  #   game = Board.new
+  #   game.place_X(0,1)
+  #   @board = [[nil,nil,nil],
+  #             [ -1,nil,nil],
+  #             [nil,nil,nil]]
   def place_X(x, y)
     place(x, y, @@X)
     @board
   end
 
-  # Check if there is a win.
+  # Check if there is a win and return the winner.
   #
   #   game = Board.new
   #   # Game is played...
@@ -30,12 +52,12 @@ class Board
     horiz_win? || vert_win? || diag_win?
   end
 
+  private
   @@O       = 1
   @@X       = -1
   @@check_O = Proc.new { |elem| elem == @@O }
   @@check_X = Proc.new { |elem| elem == @@X }
 
-  private
   def horiz_win?
     @board.each do |line|
       win_O = line.all?(&@@check_O)
