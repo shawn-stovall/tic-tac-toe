@@ -9,24 +9,16 @@ class Board
               [nil,nil,nil]]
   end
 
-  def play
-    until win?
-      puts "O:  Please enter x position: "
-      x = gets.chomp.to_i
-
-      puts "O:  Please enter y position: "
-      y = gets.chomp.to_i
-
-      @board[x][y] = 1
-      print @board[0].to_s + "\n"
-      print @board[1].to_s + "\n"
-      print @board[2].to_s + "\n"
-    end
+  def place_O(x, y)
+    place(x, y, @@O)
+    @board
   end
 
-  private
-  @@check_O = Proc.new { |elem| elem == 1  }
-  @@check_X = Proc.new { |elem| elem == -1 }
+  def place_X(x, y)
+    place(x, y, @@X)
+    @board
+  end
+
   # Check if there is a win.
   #
   #   game = Board.new
@@ -38,13 +30,19 @@ class Board
     horiz_win? || vert_win? || diag_win?
   end
 
+  @@O       = 1
+  @@X       = -1
+  @@check_O = Proc.new { |elem| elem == @@O }
+  @@check_X = Proc.new { |elem| elem == @@X }
+
+  private
   def horiz_win?
     @board.each do |line|
       win_O = line.all?(&@@check_O)
       win_X = line.all?(&@@check_X)
 
-      return  1 if win_O
-      return -1 if win_X
+      return @@O if win_O
+      return @@X if win_X
     end
 
     return nil
@@ -57,8 +55,8 @@ class Board
       win_O = arr.all?(&@@check_O)
       win_X = arr.all?(&@@check_X)
 
-      return  1 if win_O
-      return -1 if win_X
+      return @@O if win_O
+      return @@X if win_X
     end
 
     return nil
@@ -77,8 +75,24 @@ class Board
     rwin_O = right.all?(&@@check_O)
     rwin_X = right.all?(&@@check_X)
 
-    return  1 if lwin_O || rwin_O
-    return -1 if lwin_X || lwin_X
+    return @@O if lwin_O || rwin_O
+    return @@X if lwin_X || rwin_X
     return nil
   end
+
+  def place(x,y,val)
+    begin
+      if (x < 0 || x > 2) || (y < 0 || y > 2)
+        raise RangeError, "Error: Values must be 0 through 2."
+      end
+      @board[y][x] = val
+    rescue RangeError => e
+      puts e.message
+      print "Please enter x: "
+      x = gets.chomp.to_i
+      print "Please enter y: "
+      y = gets.chomp.to_i
+      retry
+    end
+  end    
 end
