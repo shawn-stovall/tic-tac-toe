@@ -32,12 +32,12 @@ class Board
   #             [nil,nil,nil]]
   #
   #   game = Board.new
-  #   game.place_X(0,1)
+  #   game.place_X([0,1])
   #   @board = [[nil,nil,nil],
   #             [ -1,nil,nil],
   #             [nil,nil,nil]]
-  def place_X(x, y)
-    place(x, y, @@X)
+  def place_X(coords)
+    place(coords[0], coords[1], @@X)
     @board
   end
 
