@@ -1,4 +1,3 @@
-# coding: utf-8
 require "./board"
 require "./player"
 
@@ -12,10 +11,10 @@ def play(p1, p2)
   player2.assign("X")
 
   until (winner = game.win?) || game.full?
-    puts game.render_board
+    render_board(game)
 
-    game.place_O(player1.place)
-    game.place_X(player2.place)
+    game.place_O(player1.get_assign)
+    game.place_X(player2.get_assign)
   end
 
   if winner == 1

@@ -1,3 +1,4 @@
+# coding: utf-8
 # Class to contain the state of the Tic Tac Toe board
 class Board
   attr_reader :board
@@ -32,12 +33,12 @@ class Board
   #             [nil,nil,nil]]
   #
   #   game = Board.new
-  #   game.place_X(0,1)
+  #   game.place_X([0,1])
   #   @board = [[nil,nil,nil],
   #             [ -1,nil,nil],
   #             [nil,nil,nil]]
-  def place_X(x, y)
-    place(x, y, @@X)
+  def place_X(coords)
+    place(coords[0], coords[1], @@X)
     @board
   end
 
@@ -65,6 +66,16 @@ class Board
     else
       false
     end
+  end
+
+  # Creates a String representation of the board given its current state.
+  def render_board
+    board = ""
+    @board.each_with_index do |line, index|
+      board << render_line(line) << "\n"
+      board << "═══╬═══╬═══\n" if index < 2
+    end
+    board
   end
   
   private
@@ -131,5 +142,22 @@ class Board
       y = gets.chomp.to_i
       retry
     end
-  end    
+  end
+
+  def render_line(line)
+    " " + render_symbol(line[0]) + \
+    " ║ " + render_symbol(line[1]) + \
+    " ║ " + render_symbol(line[2])
+  end
+
+  def render_symbol(symbol)
+    case symbol
+    when nil
+      " "
+    when @@X
+      "X"
+    when @@O
+      "O"
+    end
+  end
 end

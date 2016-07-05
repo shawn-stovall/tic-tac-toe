@@ -1,0 +1,24 @@
+class Player
+  attr_reader :wins
+  attr_accessor :symbol
+
+  def initialize(name, symbol)
+    @name = name
+    @symbol = symbol
+    @win_slogan = "#{@name} wins!"
+    @posision_inq = "Place #{@symbol} at: "
+  end
+
+  def assign(symbol)
+    begin
+      puts symbol
+      raise "Error: symbol must be 'X' or 'O'" if symbol != "X" && symbol != "O"
+    rescue Exception => e
+      puts e
+      print "Please enter 'X' or 'O': "
+      symbol = gets.chomp.upcase
+      retry
+    end
+  end
+end
+      
