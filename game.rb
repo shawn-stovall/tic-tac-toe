@@ -13,11 +13,13 @@ def play(p1, p2)
 
   until (winner = game.win?) || game.full?
     puts game.render_board
-
     game.place_O(player1.place)
+    puts game.render_board
     game.place_X(player2.place)
   end
 
+  puts game.render_board
+  
   if winner == 1
     player1.win
   elsif winner == -1

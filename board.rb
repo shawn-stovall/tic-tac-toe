@@ -130,11 +130,11 @@ class Board
 
   def place(x, y, val)
     begin
-      if (x < 0 || x > 2) || (y < 0 || y > 2)
-        raise RangeError, "Error: Values must be 0 through 2."
-      end
+      raise RangeError, "Error: Values must be 0 through 2." if (x < 0 || x > 2) || (y < 0 || y > 2)
+      raise ArgumentError, "Error: Position already occupied." if !board[y][x].nil?
+      
       @board[y][x] = val
-    rescue RangeError => e
+    rescue Exception => e
       puts e.message
       print "Please enter x: "
       x = gets.chomp.to_i
